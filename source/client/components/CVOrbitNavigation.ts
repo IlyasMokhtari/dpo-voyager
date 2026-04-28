@@ -127,6 +127,10 @@ export default class CVOrbitNavigation extends CObject3D
         return this.ins.enabled.value;
     }
 
+    set enabled(value: boolean) {
+        this.ins.enabled.setValue(value);
+    }
+
     get snapshotProperties() {
         return [
             this.ins.orbit,
