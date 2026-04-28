@@ -158,6 +158,10 @@ export default class CVDerivativesController extends Component{
     enabled: types.Boolean("LOD.Enabled", false),
   }
 
+  get enabled(){
+    return this.ins.enabled.value;
+  }
+
 
   ins = this.addInputs<CObject3D, typeof CVDerivativesController.ins>(CVDerivativesController.ins);
 
@@ -219,7 +223,7 @@ export default class CVDerivativesController extends Component{
 
   tock(context :IPulseContext) :boolean{
     const cameraComponent = this._scene?.activeCameraComponent;
-    if (!this.ins.enabled.value || !cameraComponent) {
+    if (!this.enabled || !cameraComponent) {
       return false
     }
 
