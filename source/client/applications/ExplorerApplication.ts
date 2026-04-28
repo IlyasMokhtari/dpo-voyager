@@ -701,6 +701,17 @@ Version: ${ENV_VERSION}
         this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.setShader(value);
     }
 
+    // Get Tools visibility
+    isToolsVisible(){
+        const toolIns = this.system.getMainComponent(CVToolProvider).isToolsVisible();
+        return toolIns;
+    }
+
+    // Set Tools visibility
+    setToolsVisible(active: boolean){
+        this.system.getMainComponent(CVToolProvider).setToolsVisible(active);
+    }
+
     // enable/disable camera controls
     enableNavigation(enable: string)
     {

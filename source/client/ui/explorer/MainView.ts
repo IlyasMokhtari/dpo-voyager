@@ -312,6 +312,18 @@ export default class MainView extends CustomElement
         }
     }
 
+    isToolsVisible(){
+        if(this.application) {
+            return this.application.isToolsVisible();
+        }
+    }
+
+    setToolsVisible(active: boolean){
+        if(this.application) {
+            this.application.setToolsVisible(active);
+        }
+    }
+
     getCameraOrbit(type?: string)
     {
         if(this.application) {
