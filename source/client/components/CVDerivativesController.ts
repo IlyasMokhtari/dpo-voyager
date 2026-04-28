@@ -162,6 +162,10 @@ export default class CVDerivativesController extends Component{
     return this.ins.enabled.value;
   }
 
+  set enabled(value: boolean){
+    this.ins.enabled.setValue(value);
+  }
+
 
   ins = this.addInputs<CObject3D, typeof CVDerivativesController.ins>(CVDerivativesController.ins);
 
