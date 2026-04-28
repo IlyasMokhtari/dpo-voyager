@@ -127,7 +127,7 @@ export default class CVOrbitNavigation extends CObject3D
         return this.ins.enabled.value;
     }
 
-    set enabled(value: boolean) {
+    set enabled(value: boolean){
         this.ins.enabled.setValue(value);
     }
 

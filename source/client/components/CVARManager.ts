@@ -391,7 +391,7 @@ export default class CVARManager extends Component
         setup.tape.ins.visible.setValue(false);
         setup.slicer.ins.enabled.setValue(false);
         if(setup.viewer.ins.shader.value !== EShaderMode.Default) {
-            setup.viewer.ins.shader.setValue(EShaderMode.Default);
+            setup.viewer.setShader(EShaderMode.Default);
         }
         setup.viewer.ins.annotationsVisible.setValue(false);
 
@@ -467,7 +467,7 @@ export default class CVARManager extends Component
         setup.slicer.ins.enabled.setValue(!!featuresToReset.pop());
         const cachedShader = featuresToReset.pop();
         if(cachedShader !== EShaderMode.Default) {
-            setup.viewer.ins.shader.setValue(cachedShader);
+            setup.viewer.setShader(cachedShader);
         }
 
         // Reset shadowing lights

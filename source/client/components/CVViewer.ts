@@ -72,6 +72,14 @@ export default class CVViewer extends Component
     ins = this.addInputs(CVViewer.ins);
     outs = this.addOutputs(CVViewer.outs);
 
+    getShader(){
+        return this.ins.shader.value;
+    }
+
+    setShader(value: number){
+        this.ins.shader.setValue(value);
+    }
+
     get settingProperties() {
         return [
             this.ins.annotationsVisible,
@@ -148,7 +156,7 @@ export default class CVViewer extends Component
             this.getGraphComponents(CVModel2).forEach(model => {
                 model.ins.variant.setOption(variant);
             });
-            ins.shader.setValue(0);
+            this.setShader(0);
         }
         if (ins.shader.changed) {
             const shader = ins.shader.getValidatedValue();
