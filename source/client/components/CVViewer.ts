@@ -156,7 +156,7 @@ export default class CVViewer extends Component
             this.getGraphComponents(CVModel2).forEach(model => {
                 model.ins.variant.setOption(variant);
             });
-            this.setShader(0);
+            ins.shader.setValue(0);
         }
         if (ins.shader.changed) {
             const shader = ins.shader.getValidatedValue();

@@ -300,6 +300,18 @@ export default class MainView extends CustomElement
         }
     }
 
+    getShader(){
+        if (this.application){
+            return this.application.getShader();
+        }
+    }
+
+    setShader(shader: number){
+        if (this.application){
+            this.application.setShader(shader);
+        }
+    }
+
     getCameraOrbit(type?: string)
     {
         if(this.application) {

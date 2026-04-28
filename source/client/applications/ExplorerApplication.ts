@@ -48,6 +48,7 @@ import { clamp } from "client/utils/Helpers"
 import CVScene from "client/components/CVScene";
 import CVAnnotationView from "client/components/CVAnnotationView";
 import { ELanguageType } from "client/schema/common";
+import CVViewer from "client/components/CVViewer";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -683,6 +684,20 @@ Version: ${ENV_VERSION}
     {
         const toursIns = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.tours.tours;
         return toursIns;
+    }
+
+    //Get Shader value
+    getShader()
+    {
+        const shaderValue = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.ins.shader.value;
+        return shaderValue;
+    }
+
+    //Set Shader value
+    setShader(value: number)
+    {
+        const shaderIns = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.ins.shader;
+        shaderIns.setValue(value);
     }
 
     // enable/disable camera controls
