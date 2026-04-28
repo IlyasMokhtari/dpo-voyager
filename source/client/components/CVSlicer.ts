@@ -71,7 +71,7 @@ export default class CVSlicer extends Component
     }
 
     get snapshotProperties() {
-        return [inverted
+        return [
             this.ins.enabled,
             this.ins.axis,
             this.ins.position,
