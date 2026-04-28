@@ -418,6 +418,13 @@ export default class MainView extends CustomElement
         }
     }
 
+    getActiveTags()
+    {
+        if(this.application) {
+            return this.viewer.ins.activeTags.value;
+        }
+    }
+
     // set active tags
     setActiveTags(tags: string)
     {
