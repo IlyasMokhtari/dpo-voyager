@@ -49,11 +49,8 @@ import CVScene from "client/components/CVScene";
 import CVAnnotationView from "client/components/CVAnnotationView";
 import CVEnvironment from "client/components/CVEnvironment";
 import { ELanguageType } from "client/schema/common";
-<<<<<<< HEAD
 import CVViewer from "client/components/CVViewer";
-=======
 import CVSlicer from "client/components/CVSlicer";
->>>>>>> 82e294239bb17f8cabb140f32f6bcc2eff241764
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -694,15 +691,14 @@ Version: ${ENV_VERSION}
     //Get Shader value
     getShader()
     {
-        const shaderValue = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.ins.shader.value;
+        const shaderValue = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.getShader();
         return shaderValue;
     }
 
     //Set Shader value
     setShader(value: number)
     {
-        const shaderIns = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.ins.shader;
-        shaderIns.setValue(value);
+        this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.viewer.setShader(value);
     }
 
     // enable/disable camera controls
