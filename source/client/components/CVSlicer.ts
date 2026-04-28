@@ -71,7 +71,7 @@ export default class CVSlicer extends Component
     }
 
     get snapshotProperties() {
-        return [
+        return [inverted
             this.ins.enabled,
             this.ins.axis,
             this.ins.position,
@@ -180,6 +180,27 @@ export default class CVSlicer extends Component
             inverted: ins.inverted.value,
             color: ins.color.value
         };
+    }
+
+    getSlicer()
+    {   
+        const ins = this.ins;
+        return { 
+            enabled: ins.enabled.value,
+            axis: ins.axis.value,
+            position: ins.position.value,
+            inverted: ins.inverted.value,
+            color: ins.color.value
+        };
+    }
+
+    setSlicer(enabled?: boolean, axis?: number, position?: number, inverted?: boolean, color?: number[])
+    {
+        if(enabled !== undefined) this.ins.enabled.setValue(enabled);
+        if(axis !== undefined) this.ins.axis.setValue(axis);
+        if(position !== undefined) this.ins.position.setValue(position);
+        if(inverted !== undefined) this.ins.inverted.setValue(inverted);
+        if(color !== undefined) this.ins.color.setValue(color);
     }
 
     private updateMaterial(model: CVModel2, material: Material)

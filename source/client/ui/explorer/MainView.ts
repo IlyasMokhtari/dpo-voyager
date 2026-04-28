@@ -414,4 +414,18 @@ export default class MainView extends CustomElement
             viewerActiveTags.setValue(tags);
         }
     }
+
+    getSlicer()
+    {
+            if(this.application) {
+            return this.application.getSlicer();
+        }
+    }
+
+    setSlicer(enabled?: boolean, axis?: number, position?: number, inverted?: boolean, color?: number[])
+    {
+        if(this.application) {
+            this.application.setSlicer(enabled, axis, position, inverted, color);
+        }
+    }
 }

@@ -48,6 +48,7 @@ import { clamp } from "client/utils/Helpers"
 import CVScene from "client/components/CVScene";
 import CVAnnotationView from "client/components/CVAnnotationView";
 import { ELanguageType } from "client/schema/common";
+import CVSlicer from "client/components/CVSlicer";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -760,6 +761,18 @@ Version: ${ENV_VERSION}
         const reader = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.reader;
         reader.ins.enabled.setValue(true);
         reader.ins.articleId.setValue(id);
+    }
+
+    getSlicer()
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup;
+        return setup.slicer.getSlicer();
+    }
+
+    setSlicer(enabled?: boolean, axis?: number, position?: number, inverted?: boolean,color?: number[])
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup;
+        setup.slicer.setSlicer(enabled, axis, position, inverted, color);
     }
 
     resetViewer(){
