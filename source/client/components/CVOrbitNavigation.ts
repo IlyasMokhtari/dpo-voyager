@@ -123,6 +123,10 @@ export default class CVOrbitNavigation extends CObject3D
         ];
     }
 
+    get enabled(){
+        return this.ins.enabled.value;
+    }
+
     get snapshotProperties() {
         return [
             this.ins.orbit,
@@ -441,7 +445,7 @@ export default class CVOrbitNavigation extends CObject3D
             return;
         }
 
-        if (this.ins.enabled.value && this._scene.activeCameraComponent) {
+        if (this.enabled && this._scene.activeCameraComponent) {
             if (event.type === "pointer-down" && window.getSelection().type !== "None") {
                 window.getSelection().removeAllRanges();
             }
@@ -462,7 +466,7 @@ export default class CVOrbitNavigation extends CObject3D
             return;
         }
 
-        if (this.ins.enabled.value && this._scene.activeCameraComponent) {
+        if (this.enabled && this._scene.activeCameraComponent) {
             this._controller.setViewportSize(viewport.width, viewport.height);
             this._controller.onTrigger(event);
             event.stopPropagation = true;
@@ -480,7 +484,7 @@ export default class CVOrbitNavigation extends CObject3D
             return;
         }
 
-        if (this.ins.enabled.value && this._scene.activeCameraComponent) {
+        if (this.enabled && this._scene.activeCameraComponent) {
             if(event.key.includes("Arrow")) {
                 if(event.ctrlKey) {
                     this.ins.keyNavActive.setValue(EKeyNavMode.Zoom);
