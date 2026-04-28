@@ -47,6 +47,7 @@ import CRenderer from "client/../../libs/ff-scene/source/components/CRenderer";
 import { clamp } from "client/utils/Helpers"
 import CVScene from "client/components/CVScene";
 import CVAnnotationView from "client/components/CVAnnotationView";
+import CVEnvironment from "client/components/CVEnvironment";
 import { ELanguageType } from "client/schema/common";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -764,6 +765,45 @@ Version: ${ENV_VERSION}
 
     resetViewer(){
         this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.resetViewer();
+    }
+
+    // Retourne l'état courant de l'environnement (map HDR, intensité, rotation, visibilité)
+    getEnvironment()
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return null;
+        const ins = setup.environment.ins;
+        return {
+            imageIndex: ins.imageIndex.value,
+            intensity: ins.intensity.value,
+            rotation: ins.rotation.cloneValue(),
+            visible: ins.visible.value,
+            enabled: ins.enabled.value
+        };
+    }
+
+    // Applique un ou plusieurs paramètres d'environnement
+    setEnvironment(params: { imageIndex?: number, intensity?: number, rotation?: [number,number,number], visible?: boolean, enabled?: boolean })
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return;
+        const ins = setup.environment.ins;
+
+        if (params.imageIndex !== undefined) {
+            ins.imageIndex.setValue(params.imageIndex);
+        }
+        if (params.intensity !== undefined) {
+            ins.intensity.setValue(params.intensity);
+        }
+        if (params.rotation !== undefined) {
+            ins.rotation.setValue(params.rotation);
+        }
+        if (params.visible !== undefined) {
+            ins.visible.setValue(params.visible);
+        }
+        if (params.enabled !== undefined) {
+            ins.enabled.setValue(params.enabled);
+        }
     }
 
     // helper function to standardize parsing boolean string params

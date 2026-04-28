@@ -414,4 +414,18 @@ export default class MainView extends CustomElement
             viewerActiveTags.setValue(tags);
         }
     }
+
+    getEnvironment()
+    {
+        if(this.application) {
+            return this.application.getEnvironment();
+        }
+    }
+
+    setEnvironment(params: { imageIndex?: number, intensity?: number, rotation?: [number,number,number], visible?: boolean, enabled?: boolean })
+    {
+        if(this.application) {
+            this.application.setEnvironment(params);
+        }
+    }
 }
