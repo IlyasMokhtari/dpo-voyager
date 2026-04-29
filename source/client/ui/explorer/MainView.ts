@@ -446,9 +446,44 @@ export default class MainView extends CustomElement
         }
     }
 
+    setViewPreset(preset: number)
+    {
+        if(this.application) {
+            this.application.setViewPreset(preset);
+        }
+    }
+
+    centerView()
+    {
+        if(this.application) {
+            this.application.centerView();
+        }
+    }
+
+    getProjection()
+    {
+        if(this.application) {
+            return this.application.getProjection();
+        }
+    }
+
+    setProjection(value: number)
+    {
+        if(this.application) {
+            this.application.setProjection(value);
+        }
+    }
+
+    getBackground()
+    {
+        if(this.application) {
+            return this.application.getBackground();
+        }
+    }
+
     getSlicer()
     {
-            if(this.application) {
+        if(this.application) {
             return this.application.getSlicer();
         }
     }
