@@ -312,15 +312,15 @@ export default class MainView extends CustomElement
         }
     }
 
-    isToolsVisible(){
+    isToolBarVisible(){
         if(this.application) {
-            return this.application.isToolsVisible();
+            return this.application.isToolBarVisible();
         }
     }
 
-    setToolsVisible(active: boolean){
+    setToolBarVisibility(active: boolean){
         if(this.application) {
-            this.application.setToolsVisible(active);
+            this.application.setToolBarVisibility(active);
         }
     }
 

@@ -42,11 +42,11 @@ export default class CVToolProvider extends CComponentProvider<CVTool>
 
     ins = this.addInputs(CVToolProvider.ins);
 
-    isToolsVisible() {
+    isToolBarVisible() {
         return this.ins.visible.value;
     }
 
-    setToolsVisible(value: boolean){
+    setToolBarVisibility(value: boolean){
         this.ins.visible.setValue(value);
     }
 

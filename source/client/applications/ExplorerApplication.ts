@@ -702,14 +702,14 @@ Version: ${ENV_VERSION}
     }
 
     // Get Tools visibility
-    isToolsVisible(){
-        const toolIns = this.system.getMainComponent(CVToolProvider).isToolsVisible();
+    isToolBarVisible(){
+        const toolIns = this.system.getMainComponent(CVToolProvider).isToolBarVisible();
         return toolIns;
     }
 
     // Set Tools visibility
-    setToolsVisible(active: boolean){
-        this.system.getMainComponent(CVToolProvider).setToolsVisible(active);
+    setToolBarVisibility(active: boolean){
+        this.system.getMainComponent(CVToolProvider).setToolBarVisibility(active);
     }
 
     // Get Floor visibility
