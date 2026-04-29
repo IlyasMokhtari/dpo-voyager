@@ -844,6 +844,19 @@ Version: ${ENV_VERSION}
         }
     }
 
+
+    getGrid()
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup;
+        return setup.grid.getGrid();
+    }
+
+    setGrid(visible?: boolean, color?: number[], opacity?: number, labels?: boolean, axes?: boolean)
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup;
+        setup.grid.setGrid(visible, color, opacity, labels, axes);
+    }
+
     // helper function to standardize parsing boolean string params
     protected isTrue(input: string)
     {

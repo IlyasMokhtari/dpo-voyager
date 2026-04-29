@@ -28,6 +28,7 @@ import { EUnitType } from "client/schema/common";
 
 import CVScene from "./CVScene";
 import CVTape from "./CVTape";
+import { labels } from "@ff/graph/propertyTypes";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -251,5 +252,27 @@ export default class CVGrid extends CObject3D
             visible: ins.visible.cloneValue(),
             color: ins.color.cloneValue(),
         };
+    }
+
+    getGrid()
+    {
+        const ins = this.ins;
+        return { 
+                visible: ins.visible.value,
+                color: ins.color.value,
+                opacity: ins.opacity.value,
+                labels: ins.labelEnabled.value,
+                axes : ins.axesEnabled.value,
+        };
+    }
+
+    setGrid(visible?: boolean, color?: number[], opacity?: number, labels?: boolean, axes?: boolean)
+    {
+        const ins = this.ins;
+        if(visible !== undefined) ins.visible.setValue(visible);
+        if(color !== undefined) ins.color.setValue(color);
+        if(opacity !== undefined) ins.opacity.setValue(opacity);
+        if(labels !== undefined) ins.labelEnabled.setValue(labels);
+        if(axes !== undefined) ins.axesEnabled.setValue(axes);
     }
 }
