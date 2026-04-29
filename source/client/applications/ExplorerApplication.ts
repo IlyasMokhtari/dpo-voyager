@@ -816,6 +816,47 @@ Version: ${ENV_VERSION}
         this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.resetViewer();
     }
 
+    setViewPreset(preset: number)
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return;
+        setup.navigation.ins.preset.setValue(preset);
+    }
+
+    centerView()
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return;
+        setup.navigation.ins.zoomExtents.set();
+    }
+
+    getProjection()
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return null;
+        // 0 = Perspective, 1 = Orthographic
+        return setup.navigation.ins.projection.value;
+    }
+
+    setProjection(value: number)
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return;
+        setup.navigation.ins.projection.setValue(value);
+    }
+
+    getBackground()
+    {
+        const setup = this.system.getMainComponent(CVDocumentProvider)?.activeComponent?.setup;
+        if (!setup) return null;
+        const ins = setup.background.ins;
+        return {
+            style: ins.style.value,
+            color0: ins.color0.cloneValue(),
+            color1: ins.color1.cloneValue()
+        };
+    }
+
     // Retourne l'état courant de l'environnement (map HDR, intensité, rotation, visibilité)
     getEnvironment()
     {
