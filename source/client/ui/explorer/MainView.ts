@@ -473,4 +473,18 @@ export default class MainView extends CustomElement
             this.application.setEnvironment(params);
         }
     }
+
+    getGrid()
+    {
+        if(this.application) {
+            return this.application.getGrid();
+        }
+    }
+
+    setGrid(visible?: boolean, color?: number[], opacity?: number, labels?: boolean, axes?: boolean)
+    {
+        if(this.application) {
+            this.application.setGrid(visible, color, opacity, labels, axes);
+        }
+    }
 }
