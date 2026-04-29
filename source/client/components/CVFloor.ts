@@ -115,6 +115,14 @@ export default class CVFloor extends CFloor
         }
     }
 
+    isVisible(){
+        return this.ins.visible.value;
+    }
+
+    setVisibility(visibility: boolean){
+        this.ins.visible.setValue(visibility);
+    }
+
     fromData(data: IFloor)
     {
         data = data || {} as IFloor;

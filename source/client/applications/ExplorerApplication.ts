@@ -712,6 +712,17 @@ Version: ${ENV_VERSION}
         this.system.getMainComponent(CVToolProvider).setToolsVisible(active);
     }
 
+    // Get Floor visibility
+    isFloorVisible(){
+        const floorIns = this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.floor.isVisible();
+        return floorIns;
+    }
+
+    // Set Floor visibility
+    setFloorVisibility(active: boolean){
+        this.system.getMainComponent(CVDocumentProvider).activeComponent.setup.floor.setVisibility(active);
+    }
+
     // enable/disable camera controls
     enableNavigation(enable: string)
     {

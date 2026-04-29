@@ -487,4 +487,16 @@ export default class MainView extends CustomElement
             this.application.setGrid(visible, color, opacity, labels, axes);
         }
     }
+
+    isFloorVisible(){
+        if(this.application) {
+            return this.application.isFloorVisible();
+        }
+    }
+
+    setFloorVisibility(active: boolean){
+        if(this.application) {
+            this.application.setFloorVisibility(active);
+        }
+    }
 }
