@@ -157,10 +157,12 @@ export default class CVViewer extends Component
                 model.ins.variant.setOption(variant);
             });
             ins.shader.setValue(0);
+            this.rootElement.dispatchEvent(new CustomEvent('variant-change', { detail: ins.variant.getOptionText() }));
         }
         if (ins.shader.changed) {
             const shader = ins.shader.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.shader.setValue(shader));
+            this.rootElement.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
         }
         if (ins.exposure.changed) {
             this.renderer.ins.exposure.setValue(ins.exposure.value);
@@ -190,6 +192,7 @@ export default class CVViewer extends Component
         if (ins.quality.changed) {
             const quality = ins.quality.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.quality.setValue(quality));
+            this.rootElement.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
         }
         if (ins.activeAnnotation.changed) {
             const id = ins.activeAnnotation.value;
@@ -202,6 +205,7 @@ export default class CVViewer extends Component
         if (ins.annotationsVisible.changed) {
             const visible = ins.annotationsVisible.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.visible.setValue(visible));
+            this.rootElement.dispatchEvent(new CustomEvent('annotations-visible', { detail: visible }));
 
             const setup = this.getGraphComponent(CVSetup);
             if(setup && ins.annotationFocus.value) {
@@ -222,6 +226,7 @@ export default class CVViewer extends Component
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.activeTags.setValue(tags));
             this.getGraphComponents(CVModel2).forEach(model => model.ins.activeTags.setValue(tags));
             this.getGraphComponents(CLight).forEach(light => light.ins.activeTags.setValue(tags));
+            this.rootElement.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
         }
         if (ins.sortedTags.changed) {
             this.refreshTagCloud();
