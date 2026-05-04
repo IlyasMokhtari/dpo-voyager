@@ -159,11 +159,8 @@ export default class CVViewer extends Component
             ins.shader.setValue(0);
             this.rootElement.dispatchEvent(new CustomEvent('variant-change', { detail: ins.variant.getOptionText() }));
         }
-        if (ins.shader.changed) {
-            const shader = ins.shader.getValidatedValue();
-            this.getGraphComponents(CVModel2).forEach(model => model.ins.shader.setValue(shader));
-            this.rootElement.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
-        }
+        this.updateShader();
+        
         if (ins.exposure.changed) {
             this.renderer.ins.exposure.setValue(ins.exposure.value);
         }
@@ -233,6 +230,15 @@ export default class CVViewer extends Component
         }
 
         return true;
+    }
+
+    protected updateShader(){
+        const ins = this.ins;
+        if (ins.shader.changed) {
+            const shader = ins.shader.getValidatedValue();
+            this.getGraphComponents(CVModel2).forEach(model => model.ins.shader.setValue(shader));
+            this.rootElement.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
+        }
     }
 
     // preRender(context)
