@@ -163,19 +163,7 @@ export default class CVViewer extends Component
         this.updateQuality();
         this.updateActiveAnnotation();
         this.updateAnnotionExit();
-        
-        if (ins.annotationsVisible.changed) {
-            const visible = ins.annotationsVisible.value;
-            this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.visible.setValue(visible));
-            this.rootElement.dispatchEvent(new CustomEvent('annotations-visible', { detail: visible }));
-
-            const setup = this.getGraphComponent(CVSetup);
-            if(setup && ins.annotationFocus.value) {
-                const tourIns = setup.tours.ins;
-                this._needsAnnoFocus = ins.annotationsVisible.value && !tourIns.enabled.value;
-                ins.annotationFocus.setValue(false);
-            }
-        }
+        this.updateAnnotationsVisible();
         if (ins.radioTags.changed && ins.radioTags.value) {
             const tagString = ins.activeTags.value;
             const tags = tagString.split(",");
@@ -270,6 +258,21 @@ export default class CVViewer extends Component
             ins.annotationsVisible.setValue(false);
         }
     }
+
+    protected updateAnnotationsVisible(){
+        const ins = this.ins;
+        if (ins.annotationsVisible.changed) {
+            const visible = ins.annotationsVisible.value;
+            this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.visible.setValue(visible));
+            this.rootElement.dispatchEvent(new CustomEvent('annotations-visible', { detail: visible }));
+
+            const setup = this.getGraphComponent(CVSetup);
+            if(setup && ins.annotationFocus.value) {
+                const tourIns = setup.tours.ins;
+                this._needsAnnoFocus = ins.annotationsVisible.value && !tourIns.enabled.value;
+                ins.annotationFocus.setValue(false);
+            }
+        }
 
 
     // preRender(context)
