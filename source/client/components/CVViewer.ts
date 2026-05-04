@@ -154,25 +154,7 @@ export default class CVViewer extends Component
         this.updateVariant();
         this.updateShader();
         this.updateExposure();
-
-        if (ins.toneMapping.changed) {
-            this.renderer.views.forEach(view => view.renderer.toneMapping = ins.toneMapping.value ? NeutralToneMapping : NoToneMapping);
-
-            const scene = this.renderer.activeScene;
-            if (scene) {
-                scene.traverse(object => {
-                    const mesh = object as Mesh;
-                    if (mesh.isMesh) {
-                        if (Array.isArray(mesh.material)) {
-                            mesh.material.forEach(material => material.needsUpdate = true);
-                        }
-                        else {
-                            mesh.material.needsUpdate = true;
-                        }
-                    }
-                });
-            }
-        }
+        this.updateToneMapping()
         if (ins.gamma.changed) {
             //this.renderer.ins.gamma.setValue(ins.gamma.value);
         }
@@ -248,6 +230,28 @@ export default class CVViewer extends Component
         const ins = this.ins;
         if (ins.exposure.changed) {
             this.renderer.ins.exposure.setValue(ins.exposure.value);
+        }
+    }
+
+    protected updateToneMapping(){
+        const ins = this.ins;
+        if (ins.toneMapping.changed) {
+            this.renderer.views.forEach(view => view.renderer.toneMapping = ins.toneMapping.value ? NeutralToneMapping : NoToneMapping);
+
+            const scene = this.renderer.activeScene;
+            if (scene) {
+                scene.traverse(object => {
+                    const mesh = object as Mesh;
+                    if (mesh.isMesh) {
+                        if (Array.isArray(mesh.material)) {
+                            mesh.material.forEach(material => material.needsUpdate = true);
+                        }
+                        else {
+                            mesh.material.needsUpdate = true;
+                        }
+                    }
+                });
+            }
         }
     }
 
