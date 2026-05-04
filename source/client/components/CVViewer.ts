@@ -165,13 +165,7 @@ export default class CVViewer extends Component
         this.updateAnnotationExit();
         this.updateAnnotationsVisible();
         this.updateRadioTags();
-        if (ins.activeTags.changed) {
-            const tags = ins.activeTags.value;
-            this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.activeTags.setValue(tags));
-            this.getGraphComponents(CVModel2).forEach(model => model.ins.activeTags.setValue(tags));
-            this.getGraphComponents(CLight).forEach(light => light.ins.activeTags.setValue(tags));
-            this.rootElement.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
-        }
+        this.updateActiveTags();
         if (ins.sortedTags.changed) {
             this.refreshTagCloud();
         }
@@ -277,6 +271,17 @@ export default class CVViewer extends Component
             if(tags.length > 1) {
                 ins.activeTags.setValue(tags[0]);
             }
+        }
+    }
+
+    protected updateActiveTags(){
+        const ins = this.ins;
+        if (ins.activeTags.changed) {
+            const tags = ins.activeTags.value;
+            this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.activeTags.setValue(tags));
+            this.getGraphComponents(CVModel2).forEach(model => model.ins.activeTags.setValue(tags));
+            this.getGraphComponents(CLight).forEach(light => light.ins.activeTags.setValue(tags));
+            this.rootElement.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
         }
     }
 
