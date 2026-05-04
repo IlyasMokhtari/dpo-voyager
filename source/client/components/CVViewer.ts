@@ -153,10 +153,8 @@ export default class CVViewer extends Component
 
         this.updateVariant();
         this.updateShader();
-        
-        if (ins.exposure.changed) {
-            this.renderer.ins.exposure.setValue(ins.exposure.value);
-        }
+        this.updateExposure();
+
         if (ins.toneMapping.changed) {
             this.renderer.views.forEach(view => view.renderer.toneMapping = ins.toneMapping.value ? NeutralToneMapping : NoToneMapping);
 
@@ -243,6 +241,13 @@ export default class CVViewer extends Component
             const shader = ins.shader.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.shader.setValue(shader));
             this.rootElement.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
+        }
+    }
+
+    protected updateExposure(){
+        const ins = this.ins;
+        if (ins.exposure.changed) {
+            this.renderer.ins.exposure.setValue(ins.exposure.value);
         }
     }
 
