@@ -155,20 +155,15 @@ export default class CVViewer extends Component
         this.updateShader();
         this.updateExposure();
         this.updateToneMapping();
+
         if (ins.gamma.changed) {
             //this.renderer.ins.gamma.setValue(ins.gamma.value);
         }
 
         this.updateQuality();
+        this.updateActiveAnnotation();
+        this.updateAnnotionExit();
         
-        if (ins.activeAnnotation.changed) {
-            const id = ins.activeAnnotation.value;
-            this.getGraphComponents(CVAnnotationView).forEach(view => view.setActiveAnnotationById(id));
-
-        }
-        if(ins.annotationExit.changed) {
-            ins.annotationsVisible.setValue(false);
-        }
         if (ins.annotationsVisible.changed) {
             const visible = ins.annotationsVisible.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.visible.setValue(visible));
@@ -258,6 +253,21 @@ export default class CVViewer extends Component
             const quality = ins.quality.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.quality.setValue(quality));
             this.rootElement.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
+        }
+    }
+
+    protected updateActiveAnnotation(){
+        const ins = this.ins;
+        if (ins.activeAnnotation.changed) {
+            const id = ins.activeAnnotation.value;
+            this.getGraphComponents(CVAnnotationView).forEach(view => view.setActiveAnnotationById(id));
+        }
+    }
+
+    protected updateAnnotionExit(){
+        const ins = this.ins;
+        if(ins.annotationExit.changed) {
+            ins.annotationsVisible.setValue(false);
         }
     }
 
