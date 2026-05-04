@@ -162,15 +162,9 @@ export default class CVViewer extends Component
 
         this.updateQuality();
         this.updateActiveAnnotation();
-        this.updateAnnotionExit();
+        this.updateAnnotationExit();
         this.updateAnnotationsVisible();
-        if (ins.radioTags.changed && ins.radioTags.value) {
-            const tagString = ins.activeTags.value;
-            const tags = tagString.split(",");
-            if(tags.length > 1) {
-                ins.activeTags.setValue(tags[0]);
-            }
-        }
+        this.updateRadioTags();
         if (ins.activeTags.changed) {
             const tags = ins.activeTags.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.activeTags.setValue(tags));
@@ -252,7 +246,7 @@ export default class CVViewer extends Component
         }
     }
 
-    protected updateAnnotionExit(){
+    protected updateAnnotationExit(){
         const ins = this.ins;
         if(ins.annotationExit.changed) {
             ins.annotationsVisible.setValue(false);
@@ -273,7 +267,18 @@ export default class CVViewer extends Component
                 ins.annotationFocus.setValue(false);
             }
         }
+    }
 
+    protected updateRadioTags(){
+        const ins = this.ins;
+        if (ins.radioTags.changed && ins.radioTags.value) {
+            const tagString = ins.activeTags.value;
+            const tags = tagString.split(",");
+            if(tags.length > 1) {
+                ins.activeTags.setValue(tags[0]);
+            }
+        }
+    }
 
     // preRender(context)
     // {
