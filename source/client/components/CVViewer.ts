@@ -154,7 +154,7 @@ export default class CVViewer extends Component
         this.updateVariant();
         this.updateShader();
         this.updateExposure();
-        this.updateToneMapping()
+        this.updateToneMapping();
         if (ins.gamma.changed) {
             //this.renderer.ins.gamma.setValue(ins.gamma.value);
         }
