@@ -159,11 +159,8 @@ export default class CVViewer extends Component
             //this.renderer.ins.gamma.setValue(ins.gamma.value);
         }
 
-        if (ins.quality.changed) {
-            const quality = ins.quality.getValidatedValue();
-            this.getGraphComponents(CVModel2).forEach(model => model.ins.quality.setValue(quality));
-            this.rootElement.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
-        }
+        this.updateQuality();
+        
         if (ins.activeAnnotation.changed) {
             const id = ins.activeAnnotation.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.setActiveAnnotationById(id));
@@ -252,6 +249,15 @@ export default class CVViewer extends Component
                     }
                 });
             }
+        }
+    }
+
+    protected updateQuality(){
+        const ins = this.ins;
+        if (ins.quality.changed) {
+            const quality = ins.quality.getValidatedValue();
+            this.getGraphComponents(CVModel2).forEach(model => model.ins.quality.setValue(quality));
+            this.rootElement.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
         }
     }
 
