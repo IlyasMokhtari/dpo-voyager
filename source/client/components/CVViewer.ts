@@ -166,9 +166,7 @@ export default class CVViewer extends Component
         this.updateAnnotationsVisible();
         this.updateRadioTags();
         this.updateActiveTags();
-        if (ins.sortedTags.changed) {
-            this.refreshTagCloud();
-        }
+        this.updateSortedTags();
 
         return true;
     }
@@ -282,6 +280,13 @@ export default class CVViewer extends Component
             this.getGraphComponents(CVModel2).forEach(model => model.ins.activeTags.setValue(tags));
             this.getGraphComponents(CLight).forEach(light => light.ins.activeTags.setValue(tags));
             this.rootElement.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
+        }
+    }
+
+    protected updateSortedTags(){
+        const ins = this.ins;
+        if (ins.sortedTags.changed) {
+            this.refreshTagCloud();
         }
     }
 
