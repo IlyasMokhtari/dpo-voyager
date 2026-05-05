@@ -179,7 +179,7 @@ export default class CVViewer extends Component
                 model.ins.variant.setOption(variant);
             });
             ins.shader.setValue(0);
-            this.rootElement.dispatchEvent(new CustomEvent('variant-change', { detail: ins.variant.getOptionText() }));
+            this.rootElement?.dispatchEvent(new CustomEvent('variant-change', { detail: ins.variant.getOptionText() }));
         }
     }
 
@@ -188,7 +188,7 @@ export default class CVViewer extends Component
         if (ins.shader.changed) {
             const shader = ins.shader.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.shader.setValue(shader));
-            this.rootElement.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
+            this.rootElement?.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
         }
     }
 
@@ -226,7 +226,7 @@ export default class CVViewer extends Component
         if (ins.quality.changed) {
             const quality = ins.quality.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.quality.setValue(quality));
-            this.rootElement.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
+            this.rootElement?.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
         }
     }
 
@@ -250,7 +250,7 @@ export default class CVViewer extends Component
         if (ins.annotationsVisible.changed) {
             const visible = ins.annotationsVisible.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.visible.setValue(visible));
-            this.rootElement.dispatchEvent(new CustomEvent('annotations-visible', { detail: visible }));
+            this.rootElement?.dispatchEvent(new CustomEvent('annotations-visible', { detail: visible }));
 
             const setup = this.getGraphComponent(CVSetup);
             if(setup && ins.annotationFocus.value) {
@@ -279,7 +279,7 @@ export default class CVViewer extends Component
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.activeTags.setValue(tags));
             this.getGraphComponents(CVModel2).forEach(model => model.ins.activeTags.setValue(tags));
             this.getGraphComponents(CLight).forEach(light => light.ins.activeTags.setValue(tags));
-            this.rootElement.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
+            this.rootElement?.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
         }
     }
 
@@ -414,7 +414,7 @@ export default class CVViewer extends Component
         const id = event.annotation ? event.annotation.id : "";
         this.ins.activeAnnotation.setValue(id);
 
-        this.rootElement.dispatchEvent(new CustomEvent('annotation-active', { detail: id }));
+        this.rootElement?.dispatchEvent(new CustomEvent('annotation-active', { detail: id }));
     }
 
     protected onModelComponent(event: IComponentEvent<CVModel2>)
@@ -454,9 +454,21 @@ export default class CVViewer extends Component
 
         if (event.add) {
             component.on<ITagUpdateEvent>("tag-update", this.refreshTagCloud, this);
+            component.outs.activeLanguage.on("value", this.onLanguageChange, this);
         }
         else if (event.remove) {
             component.off<ITagUpdateEvent>("tag-update", this.refreshTagCloud, this);
+            component.outs.activeLanguage.off("value", this.onLanguageChange, this);
+        }
+    }
+
+    protected onLanguageChange()
+    {
+        const language = this.getGraphComponent(CVLanguageManager);
+        if (language) {
+            this.rootElement?.dispatchEvent(new CustomEvent('language-change', {
+                detail: language.codeString()
+            }));
         }
     }
 
