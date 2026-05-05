@@ -30,6 +30,7 @@ import { ENavigationType, TNavigationType, INavigation } from "client/schema/set
 import CVScene from "./CVScene";
 import CVAssetManager from "./CVAssetManager";
 import CVARManager from "./CVARManager";
+import CVSetup from "./CVSetup";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -172,17 +173,41 @@ export default class CVOrbitNavigation extends CObject3D
         super.dispose();
     }
 
-    update()
-    {
-        const ins = this.ins;
-        const controller = this._controller;
 
+    update(){
+        this.updateProjection();
+        this.updatePreset();
+        this.updateNavMode();
+        this.updateLights();
+        this.updateOrbitOffset();
+        this.updateLimits();
+        this.updateZoomExtents();
+        this.updateAutoRotation();
+        this.updateOrbitNavigation();
+        return true;
+    }
+
+    protected updateOrbitNavigation(){
+        const ins = this.ins;
+        if (ins.orbit.changed || ins.offset.changed) {
+            const viewer = this.getGraphComponent(CVSetup).viewer;
+            viewer.rootElement.dispatchEvent(
+                new CustomEvent("orbit-navigation-change", {
+                    detail: {
+                        orbit: ins.orbit.cloneValue(),
+                        offset: ins.offset.cloneValue(),
+                    }
+                })
+            );
+        }
+    }
+    
+
+    protected updateProjection(){
         const cameraComponent = this._scene.activeCameraComponent;
         const camera = cameraComponent ? cameraComponent.camera : null;
-
-        const { projection, preset, orbit, offset } = ins;
-
-        // camera projection
+        const projection = this.ins.projection;
+        
         if (cameraComponent && projection.changed) {
             camera.setProjection(projection.getValidatedValue());
             cameraComponent.ins.projection.setValue(projection.value, true);
@@ -193,13 +218,21 @@ export default class CVOrbitNavigation extends CObject3D
                 camera.updateProjectionMatrix();
             }
         }
+    }
 
-        // camera preset
+    protected updatePreset(){
+        const ins = this.ins;
+        const {preset, orbit} = ins;
+
         if (preset.changed && preset.value !== EViewPreset.None) {
             orbit.setValue(_orientationPresets[preset.getValidatedValue()].slice());
         }
+    }
 
-        // nav mode
+    protected updateNavMode(){
+        const ins = this.ins;
+        const controller = this._controller;
+
         if (ins.mode.changed) {
             switch(ins.mode.value) {
                 case ENavigationType.Orbit:
@@ -213,30 +246,40 @@ export default class CVOrbitNavigation extends CObject3D
                     break;
             }
         }
+    }
 
-        // include lights
+    protected updateLights(){
+        const ins = this.ins;
+
         if (ins.lightsFollowCamera.changed) {
             const lightTransform = this.getLightTransform();
             if (lightTransform) {
                 if (ins.lightsFollowCamera.value) {
                     lightTransform.ins.order.setValue(ERotationOrder.ZXY);
                     lightTransform.ins.rotation.reset();
-                    lightTransform.ins.rotation.linkFrom(orbit, 1, 1);
+                    lightTransform.ins.rotation.linkFrom(ins.orbit, 1, 1);
                 }
                 else {
-                    lightTransform.ins.rotation.unlinkFrom(orbit, 1, 1);
+                    lightTransform.ins.rotation.unlinkFrom(ins.orbit, 1, 1);
                     lightTransform.ins.rotation.reset();
                 }
             }
         }
+    }
 
-        const { minOrbit, minOffset, maxOrbit, maxOffset} = ins;
-
-        // orbit, offset and limits
-        if (orbit.changed || offset.changed) {
-            controller.orbit.fromArray(orbit.value);
-            controller.offset.fromArray(offset.value);
+    protected updateOrbitOffset(){
+        const ins = this.ins;
+        const controller = this._controller;
+        
+        if (ins.orbit.changed || ins.offset.changed) {
+            controller.orbit.fromArray(ins.orbit.value);
+            controller.offset.fromArray(ins.offset.value);
         }
+    } 
+
+    protected updateLimits(){
+        const { minOrbit, minOffset, maxOrbit, maxOffset} = this.ins;
+        const controller = this._controller;
 
         if (minOrbit.changed || minOffset.changed || maxOrbit.changed || maxOffset.changed) {
             controller.minOrbit.fromArray(minOrbit.value);
@@ -244,8 +287,14 @@ export default class CVOrbitNavigation extends CObject3D
             controller.maxOrbit.fromArray(maxOrbit.value);
             controller.maxOffset.fromArray(maxOffset.value);
         }
+    }
 
-        // zoom extents
+    protected updateZoomExtents(){
+        const ins = this.ins;
+        const controller = this._controller;
+        const cameraComponent = this._scene.activeCameraComponent;
+        const camera = cameraComponent ? cameraComponent.camera : null;
+
         if (camera && ins.zoomExtents.changed) {
             const scene = this.getGraphComponent(CVScene);
             if(scene.models.some(model => model.outs.updated.changed)) {
@@ -269,8 +318,11 @@ export default class CVOrbitNavigation extends CObject3D
             }
             this._isAutoZooming = false;
         }
+    }
 
-        // auto rotate
+    protected updateAutoRotation(){
+        const ins = this.ins;
+        const controller = this._controller;
         if (ins.autoRotation.changed) {
             this._autoRotationStartTime = ins.autoRotation.value ? performance.now() : null;
         }
@@ -278,8 +330,6 @@ export default class CVOrbitNavigation extends CObject3D
             this._initYOrbit = controller.orbit.y;
             this._autoRotationStartTime = ins.promptActive.value ? performance.now() : null;
         }
-
-        return true;
     }
 
     tick()
