@@ -24,6 +24,7 @@ import { ISlicer, ESliceAxis, TSliceAxis } from "client/schema/setup";
 import CVScene from "./CVScene";
 import CVModel2, { IModelLoadEvent } from "./CVModel2";
 import CRenderer from "@ff/scene/components/CRenderer";
+import CVViewer from "./CVViewer";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -112,6 +113,15 @@ export default class CVSlicer extends Component
             else {
                 ins.inverted.setValue(false);
                 this.axisIndex = axisIndex;
+            }
+        }
+
+        if (ins.enabled.changed || ins.axis.changed || ins.position.changed || ins.inverted.changed) {
+            const viewer = this.getGraphComponent(CVViewer);
+            if(viewer && viewer.rootElement) {
+                viewer.rootElement.dispatchEvent(new CustomEvent('slicer-change', { 
+                    detail: this.getSlicer() 
+                }));
             }
         }
 
