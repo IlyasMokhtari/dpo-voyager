@@ -32,7 +32,7 @@ import CVAnalytics from "./CVAnalytics";
 
 import CVLanguageManager from "./CVLanguageManager";
 
-import CVViewer from "./CVViewer";
+// import CVViewer from "./CVViewer";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -150,12 +150,12 @@ export default class CVReader extends Component
                 this.readArticle(article);
                 this.analytics.sendProperty("Reader_ArticleId", article.defaultTitle);
             }
-            const viewer = this.getGraphComponent(CVViewer, true);
-            if(viewer && viewer.rootElement) {
-                viewer.rootElement.dispatchEvent(new CustomEvent('article-change', {
-                    detail: article ? { id: ins.articleId.value, title: article.defaultTitle } : null
-                }));
-            }
+            // const viewer = this.getGraphComponent(CVViewer, true);
+            // if(viewer && viewer.rootElement) {
+            //     viewer.rootElement.dispatchEvent(new CustomEvent('article-change', {
+            //         detail: article ? { id: ins.articleId.value, title: article.defaultTitle } : null
+            //     }));
+            // }
         }
         if (ins.refresh.changed) {
             this.refreshArticle();
