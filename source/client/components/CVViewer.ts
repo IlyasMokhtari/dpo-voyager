@@ -151,28 +151,7 @@ export default class CVViewer extends Component
     {
         const ins = this.ins;
 
-        this.updateVariant();
-        this.updateShader();
-        this.updateExposure();
-        this.updateToneMapping();
-
-        if (ins.gamma.changed) {
-            //this.renderer.ins.gamma.setValue(ins.gamma.value);
-        }
-
-        this.updateQuality();
-        this.updateActiveAnnotation();
-        this.updateAnnotationExit();
-        this.updateAnnotationsVisible();
-        this.updateRadioTags();
-        this.updateActiveTags();
-        this.updateSortedTags();
-
-        return true;
-    }
-
-    protected updateVariant(){
-        const ins = this.ins;
+        // update variant if shader changed
         if (ins.variant.changed) {
             const variant = ins.variant.getOptionText();
             this.getGraphComponents(CVModel2).forEach(model => {
@@ -181,26 +160,20 @@ export default class CVViewer extends Component
             ins.shader.setValue(0);
             this.rootElement?.dispatchEvent(new CustomEvent('variant-change', { detail: ins.variant.getOptionText() }));
         }
-    }
 
-    protected updateShader(){
-        const ins = this.ins;
+        // update shader if changed
         if (ins.shader.changed) {
             const shader = ins.shader.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.shader.setValue(shader));
             this.rootElement?.dispatchEvent(new CustomEvent('shader-change', { detail: shader }));
         }
-    }
 
-    protected updateExposure(){
-        const ins = this.ins;
+        // update exposure if changed
         if (ins.exposure.changed) {
             this.renderer.ins.exposure.setValue(ins.exposure.value);
         }
-    }
 
-    protected updateToneMapping(){
-        const ins = this.ins;
+        // update tone mapping if changed
         if (ins.toneMapping.changed) {
             this.renderer.views.forEach(view => view.renderer.toneMapping = ins.toneMapping.value ? NeutralToneMapping : NoToneMapping);
 
@@ -219,34 +192,30 @@ export default class CVViewer extends Component
                 });
             }
         }
-    }
 
-    protected updateQuality(){
-        const ins = this.ins;
+        if (ins.gamma.changed) {
+            //this.renderer.ins.gamma.setValue(ins.gamma.value);
+        }
+
+        // update quality if changed
         if (ins.quality.changed) {
             const quality = ins.quality.getValidatedValue();
             this.getGraphComponents(CVModel2).forEach(model => model.ins.quality.setValue(quality));
             this.rootElement?.dispatchEvent(new CustomEvent('quality-change', { detail: ins.quality.getValidatedValue() }));
         }
-    }
 
-    protected updateActiveAnnotation(){
-        const ins = this.ins;
+        // update active annotation if changed
         if (ins.activeAnnotation.changed) {
             const id = ins.activeAnnotation.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.setActiveAnnotationById(id));
         }
-    }
 
-    protected updateAnnotationExit(){
-        const ins = this.ins;
+        //update annotation visibility if changed
         if(ins.annotationExit.changed) {
             ins.annotationsVisible.setValue(false);
         }
-    }
 
-    protected updateAnnotationsVisible(){
-        const ins = this.ins;
+        // update annotations visibility if changed
         if (ins.annotationsVisible.changed) {
             const visible = ins.annotationsVisible.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.visible.setValue(visible));
@@ -259,10 +228,8 @@ export default class CVViewer extends Component
                 ins.annotationFocus.setValue(false);
             }
         }
-    }
-
-    protected updateRadioTags(){
-        const ins = this.ins;
+        
+        // update radio tags if changed
         if (ins.radioTags.changed && ins.radioTags.value) {
             const tagString = ins.activeTags.value;
             const tags = tagString.split(",");
@@ -270,10 +237,8 @@ export default class CVViewer extends Component
                 ins.activeTags.setValue(tags[0]);
             }
         }
-    }
 
-    protected updateActiveTags(){
-        const ins = this.ins;
+        // update active tags if changed
         if (ins.activeTags.changed) {
             const tags = ins.activeTags.value;
             this.getGraphComponents(CVAnnotationView).forEach(view => view.ins.activeTags.setValue(tags));
@@ -281,13 +246,13 @@ export default class CVViewer extends Component
             this.getGraphComponents(CLight).forEach(light => light.ins.activeTags.setValue(tags));
             this.rootElement?.dispatchEvent(new CustomEvent('tags-change', { detail: ins.activeTags.value }));
         }
-    }
 
-    protected updateSortedTags(){
-        const ins = this.ins;
+        // update sorted tags if changed
         if (ins.sortedTags.changed) {
             this.refreshTagCloud();
         }
+
+        return true;
     }
 
     // preRender(context)
