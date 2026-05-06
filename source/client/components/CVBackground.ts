@@ -71,11 +71,6 @@ export default class CVBackground extends CBackground
     }
 
     update(context){
-        this.updateBackground();
-        return super.update(context);
-    }
-
-    protected updateBackground(){
         const ins = this.ins;
 
         if (ins.style.changed || ins.color0.changed || ins.color1.changed) {
@@ -91,5 +86,6 @@ export default class CVBackground extends CBackground
                 })
             );
         }
+        return super.update(context);
     }
 }
