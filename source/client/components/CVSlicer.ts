@@ -117,12 +117,10 @@ export default class CVSlicer extends Component
         }
 
         if (ins.enabled.changed || ins.axis.changed || ins.position.changed || ins.inverted.changed) {
-            const viewer = this.getGraphComponent(CVViewer);
-            if(viewer && viewer.rootElement) {
-                viewer.rootElement.dispatchEvent(new CustomEvent('slicer-change', { 
-                    detail: this.getSlicer() 
-                }));
-            }
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('slicer-change', { 
+                detail: this.getSlicer() 
+            }));
         }
 
         if (!ins.enabled.value && !ins.enabled.changed) {

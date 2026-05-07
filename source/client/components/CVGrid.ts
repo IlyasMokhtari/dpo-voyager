@@ -195,6 +195,13 @@ export default class CVGrid extends CObject3D
         if(ins.labelEnabled.changed) {
             this.tape.ins.visible.setValue(this.grid.visible && ins.labelEnabled.value);
         }
+        
+        if(ins.visible.changed || ins.color.changed || ins.opacity.changed || ins.axesEnabled.changed) {
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('grid-change', {
+                detail: this.getGrid()
+            }));
+        }
 
         return true;
     }
