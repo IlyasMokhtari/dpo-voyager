@@ -14,6 +14,7 @@ import { ICVLight } from "./CVLight";
 import NVNode from "client/nodes/NVNode";
 import { Vector3 } from "three";
 import CVScene from "../CVScene";
+import CVSetup from "../CVSetup";
 
 const _vec3 = new Vector3();
 
@@ -73,17 +74,45 @@ export default class CVSunLight extends CSunLight implements ICVLight {
     }
 
     update(context) {
-        super.update(context);
 
-        if(this.ins.intensity.changed) {
+    const ins = this.ins;
+
+    if (ins.color.changed ||
+        ins.intensity.changed ||
+        ins.datetime.changed ||
+        ins.timezone.changed ||
+        ins.latitude.changed ||
+        ins.longitude.changed ||
+        ins.intensityFactor.changed) 
+    {
+        if (ins.intensity.changed) {
             const scene = this.getSystemComponent(CVScene);
+
             _vec3.fromArray(this.transform.ins.position.value);
-            _vec3.normalize().multiplyScalar(scene.outs.boundingRadius.value*1.2);
+            _vec3.normalize().multiplyScalar(scene.outs.boundingRadius.value * 1.2);
             this.transform.ins.position.setValue(_vec3.toArray());
         }
 
-        return true;
+        const viewer = this.getGraphComponent(CVSetup).viewer;
+
+        viewer.rootElement.dispatchEvent(
+            new CustomEvent("light-change", {
+                detail: {
+                    type: CVSunLight.type,
+                    color: ins.color.cloneValue(),
+                    intensity: ins.intensity.value,
+                    datetime: ins.datetime.value.tz(ins.timezone.value, true).format(),
+                    timezone: ins.timezone.value,
+                    latitude: ins.latitude.value,
+                    longitude: ins.longitude.value,
+                    intensityFactor: ins.intensityFactor.value
+                }
+            })
+        );
     }
+
+    return super.update(context);
+}
 
     fromDocument(document: IDocument, node: INode): number {
         if (!isFinite(node.light)) {
