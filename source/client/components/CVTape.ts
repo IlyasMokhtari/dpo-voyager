@@ -259,6 +259,18 @@ export default class CVTape extends CObject3D
             }
         }
 
+        if(ins.enabled.changed || ins.endPosition.changed || ins.startPosition.changed) {
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('tape-change', {
+                detail: {
+                    enabled: ins.enabled.value,
+                    distance: this.outs.distance.value,
+                    startPosition: ins.startPosition.value,
+                    endPosition: ins.endPosition.value
+                }
+            }));
+        }
+
         return true;
     }
 
