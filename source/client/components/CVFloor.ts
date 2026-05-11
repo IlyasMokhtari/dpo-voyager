@@ -95,6 +95,23 @@ export default class CVFloor extends CFloor
         }
 
         super.update(context);
+
+        const ins = this.ins;
+
+        if(ins.visible.changed || ins.color.changed || ins.opacity.changed || 
+        ins.position.changed || ins.radius.changed) {
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('floor-change', {
+                detail: {
+                    visible: ins.visible.value,
+                    color: ins.color.value,
+                    opacity: ins.opacity.value,
+                    position: ins.position.value,
+                    radius: ins.radius.value
+                }
+            }));
+        }
+
         return true;
     }
 
