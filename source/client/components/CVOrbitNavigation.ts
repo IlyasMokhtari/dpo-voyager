@@ -31,6 +31,7 @@ import CVScene from "./CVScene";
 import CVAssetManager from "./CVAssetManager";
 import CVARManager from "./CVARManager";
 import CVViewer from "./CVViewer";
+import CVSetup from "./CVSetup";
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -251,6 +252,9 @@ export default class CVOrbitNavigation extends CObject3D
         // zoom extents
         if (camera && ins.zoomExtents.changed) {
             const scene = this.getGraphComponent(CVScene);
+            const viewer = this.getGraphComponent(CVSetup).viewer;
+
+            
             if(scene.models.some(model => model.outs.updated.changed)) {
                 scene.update(null);
             }
@@ -259,7 +263,6 @@ export default class CVOrbitNavigation extends CObject3D
                 /*edge case when loaded event triggers before document parsing */
             }
             else {
-                // Hack until we have a better way to make sure camera is initialized on first zoom
                 if(controller.camera) {
                     cameraComponent.camera.aspect = controller.camera.aspect;
                 }
@@ -271,6 +274,14 @@ export default class CVOrbitNavigation extends CObject3D
                 this._hasZoomed = true;
             }
             this._isAutoZooming = false;
+
+            viewer.rootElement.dispatchEvent(
+                new CustomEvent("zoom-extents", {
+                    detail: {
+                        hasZoomed: this._hasZoomed
+                    }
+                })
+            );
         }
 
         // auto rotate
@@ -282,9 +293,9 @@ export default class CVOrbitNavigation extends CObject3D
             this._autoRotationStartTime = ins.promptActive.value ? performance.now() : null;
         }
 
-        // call back
+        // call back if camera has changed outside of this component
         if (ins.orbit.changed || ins.offset.changed) {
-            const viewer = this.getGraphComponent(CVViewer);
+            const viewer = this.getGraphComponent(CVSetup).viewer;
             viewer.rootElement.dispatchEvent(
                 new CustomEvent("orbit-navigation-change", {
                     detail: {
