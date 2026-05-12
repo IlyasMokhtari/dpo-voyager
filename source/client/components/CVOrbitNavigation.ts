@@ -275,8 +275,13 @@ export default class CVOrbitNavigation extends CObject3D
             }
             this._isAutoZooming = false;
 
+<<<<<<< HEAD
             viewer.rootElement.dispatchEvent(
                 new CustomEvent("view-center-change", {
+=======
+            viewer?.rootElement?.dispatchEvent(
+                new CustomEvent("zoom-extents", {
+>>>>>>> b7dee12c (tours)
                     detail: {
                         hasZoomed: this._hasZoomed
                     }
@@ -293,18 +298,6 @@ export default class CVOrbitNavigation extends CObject3D
             this._autoRotationStartTime = ins.promptActive.value ? performance.now() : null;
         }
 
-        // call back if camera has changed outside of this component
-        if (ins.orbit.changed || ins.offset.changed) {
-            const viewer = this.getGraphComponent(CVSetup).viewer;
-            viewer.rootElement.dispatchEvent(
-                new CustomEvent("orbit-navigation-change", {
-                    detail: {
-                        orbit: ins.orbit.cloneValue(),
-                        offset: ins.offset.cloneValue(),
-                    }
-                })
-            );
-        }
 
         return true;
     }

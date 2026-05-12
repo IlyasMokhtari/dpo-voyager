@@ -32,6 +32,7 @@ import {getFocusableElements} from "../utils/focusHelpers";
 import CVSetup from "./CVSetup";
 import { CLight } from "./lights/CVLight";
 import CVAssetManager from "./CVAssetManager";
+import CVTours from "./CVTours";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -133,6 +134,7 @@ export default class CVViewer extends Component
         this.graph.components.on(CLight, this.onLightComponent, this);
         this.graph.components.on(CVAnnotationView, this.onAnnotationsComponent, this);
         this.graph.components.on(CVLanguageManager, this.onLanguageComponent, this);
+        this.graph.components.on(CVTours, this.onToursComponent, this);
 
         this.ar.ins.wallMount.linkFrom(this.ins.isWallMountAR);
         this.ar.ins.arScale.linkFrom(this.ins.arScale);
@@ -144,6 +146,7 @@ export default class CVViewer extends Component
         this.graph.components.off(CLight, this.onLightComponent, this);
         this.graph.components.off(CVAnnotationView, this.onAnnotationsComponent, this);
         this.graph.components.off(CVLanguageManager, this.onLanguageComponent, this);
+        this.graph.components.off(CVTours, this.onToursComponent, this);
         super.dispose();
     }
 
@@ -433,6 +436,38 @@ export default class CVViewer extends Component
         if (language) {
             this.rootElement?.dispatchEvent(new CustomEvent('language-change', {
                 detail: language.codeString()
+            }));
+        }
+    }
+
+    protected onToursComponent(event: IComponentEvent<CVTours>)
+    {
+        const component = event.object;
+
+        if (event.add) {
+            component.outs.tourIndex.on("value", this.onTourChange, this);
+            component.outs.stepIndex.on("value", this.onTourChange, this);
+            component.ins.enabled.on("value", this.onTourChange, this);
+        }
+        else if (event.remove) {
+            component.outs.tourIndex.off("value", this.onTourChange, this);
+            component.outs.stepIndex.off("value", this.onTourChange, this);
+            component.ins.enabled.off("value", this.onTourChange, this);
+        }
+    }
+
+    protected onTourChange()
+    {
+        const tours = this.getGraphComponent(CVTours);
+        if (tours) {
+            this.rootElement?.dispatchEvent(new CustomEvent('tour-change', {
+                detail: {
+                    enabled: tours.ins.enabled.value,
+                    tourIndex: tours.outs.tourIndex.value,
+                    stepIndex: tours.outs.stepIndex.value,
+                    tourTitle: tours.outs.tourTitle.value,
+                    stepTitle: tours.outs.stepTitle.value
+                }
             }));
         }
     }
