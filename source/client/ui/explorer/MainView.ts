@@ -30,6 +30,7 @@ import ContentView from "./ContentView";
 import ChromeView from "./ChromeView";
 
 import styles from "./styles.scss";
+import CVDocumentProvider from "../../components/CVDocumentProvider";
 
 ////////////////////////////////////////////////////////////////////////////////
 // EXPLORER ICONS
@@ -532,6 +533,13 @@ export default class MainView extends CustomElement
     setFloorVisibility(active: boolean){
         if(this.application) {
             this.application.setFloorVisibility(active);
+        }
+    }
+
+    setUIElements(value: number){
+        if(this.application) {
+            const setup = this.application.system.getMainComponent(CVDocumentProvider)?.activeComponent.setup;
+            setup?.interface.ins.visibleElements.setValue(value);
         }
     }
 }

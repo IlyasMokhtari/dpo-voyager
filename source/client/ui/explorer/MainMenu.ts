@@ -31,6 +31,8 @@ import ShareMenu from "./ShareMenu";
 import CVAnnotationView from "client/components/CVAnnotationView";
 import ARCode from "./ARCode";
 
+import CVInterface, { EUIElements } from "client/components/CVInterface";
+
 ////////////////////////////////////////////////////////////////////////////////
 
 @customElement("sv-main-menu")
@@ -132,6 +134,8 @@ export default class MainMenu extends DocumentView
 
         const language = setup.language;
 
+        const ui = setup.interface;
+
         // TODO - push to ARManager?
         const models = scene.getGraphComponents(CVModel2);
         let hasARderivatives = false;
@@ -152,8 +156,8 @@ export default class MainMenu extends DocumentView
                 ?selected=${readerActive} ?disabled=${modeButtonsDisabled} @click=${this.onToggleReader}></ff-button>` : null}
             ${annotationsButtonVisible ? html`<ff-button aria-pressed=${annotationsActive} id="anno-btn" icon="comment" title=${language.getLocalizedString("Show/Hide Annotations")}
                 ?selected=${annotationsActive} ?disabled=${modeButtonsDisabled} @click=${this.onToggleAnnotations}></ff-button>` : null}
-            <ff-button icon="share" id="share-btn" title=${language.getLocalizedString("Share Experience")}
-                ?selected=${this.shareButtonSelected} @click=${this.onToggleShare}></ff-button>    
+            ${ui.isShowing(EUIElements.share) ? html`<ff-button icon="share" id="share-btn" title=${language.getLocalizedString("Share Experience")}
+                ?selected=${this.shareButtonSelected} @click=${this.onToggleShare}></ff-button>` : null}    
             ${fullscreenButtonVisible ? html`<ff-button id="fullscreen-btn" aria-pressed=${fullscreenActive} icon="expand" title=${language.getLocalizedString("Fullscreen")}
                 ?selected=${fullscreenActive} @click=${this.onToggleFullscreen}></ff-button>` : null}
             ${toolButtonVisible ? html`<ff-button id="tools-btn" icon="tools" title=${language.getLocalizedString("Tools and Settings")}
@@ -311,6 +315,7 @@ export default class MainMenu extends DocumentView
 
             this.documentProps.on(
                 setup.interface.ins.tools,
+                setup.interface.ins.visibleElements,
                 setup.reader.ins.enabled,
                 setup.reader.outs.count,
                 setup.tours.ins.enabled,

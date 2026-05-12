@@ -21,7 +21,13 @@ import { IInterface } from "client/schema/setup";
 
 ////////////////////////////////////////////////////////////////////////////////
 
-export enum EUIElements { none = 0, menu = 1, title = 2, logo = 4, language = 8, tour_exit = 16, help = 32, reset = 64}
+export enum EUIElements { 
+    none = 0, menu = 1, title = 2, logo = 4, 
+    language = 8, tour_exit = 16, help = 32, reset = 64,
+    ar = 128, audio = 256, tours = 512, 
+    reader = 1024, annotations = 2048, 
+    share = 4096, fullscreen = 8192, tools = 16384
+}
 
 
 export default class CVInterface extends Component
@@ -33,7 +39,7 @@ export default class CVInterface extends Component
         logo: types.Boolean("Interface.Logo", true),
         menu: types.Boolean("Interface.Menu", true),
         tools: types.Boolean("Interface.Tools", true),
-        visibleElements: types.Number("Interface.VisibleElements", 127)
+        visibleElements: types.Number("Interface.VisibleElements", 32767)
     };
 
     protected static readonly outs = {
