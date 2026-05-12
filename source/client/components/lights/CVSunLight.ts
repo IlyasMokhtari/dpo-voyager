@@ -96,7 +96,7 @@ export default class CVSunLight extends CSunLight implements ICVLight {
         const viewer = this.getGraphComponent(CVSetup).viewer;
 
         viewer.rootElement.dispatchEvent(
-            new CustomEvent("light-change", {
+            new CustomEvent("SunLight-change", {
                 detail: {
                     type: CVSunLight.type,
                     color: ins.color.cloneValue(),
