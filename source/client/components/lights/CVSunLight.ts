@@ -74,43 +74,25 @@ export default class CVSunLight extends CSunLight implements ICVLight {
     }
 
     update(context) {
-        const ins = this.ins;
 
-        if (ins.color.changed ||
-            ins.intensity.changed ||
-            ins.datetime.changed ||
-            ins.timezone.changed ||
-            ins.latitude.changed ||
-            ins.longitude.changed ||
-            ins.intensityFactor.changed)
-        {
-            if (ins.intensity.changed) {
-                const scene = this.getSystemComponent(CVScene);
+    const ins = this.ins;
 
-                _vec3.fromArray(this.transform.ins.position.value);
-                _vec3.normalize().multiplyScalar(scene.outs.boundingRadius.value * 1.2);
-                this.transform.ins.position.setValue(_vec3.toArray());
-            }
+    if (ins.color.changed ||
+        ins.intensity.changed ||
+        ins.datetime.changed ||
+        ins.timezone.changed ||
+        ins.latitude.changed ||
+        ins.longitude.changed ||
+        ins.intensityFactor.changed) 
+    {
+        if (ins.intensity.changed) {
+            const scene = this.getSystemComponent(CVScene);
 
-            const viewer = this.getGraphComponent(CVSetup)?.viewer;
-
-            viewer?.rootElement?.dispatchEvent(
-                new CustomEvent("light-change", {
-                    detail: {
-                        type: CVSunLight.type,
-                        color: ins.color.cloneValue(),
-                        intensity: ins.intensity.value,
-                        datetime: ins.datetime.value.tz(ins.timezone.value, true).format(),
-                        timezone: ins.timezone.value,
-                        latitude: ins.latitude.value,
-                        longitude: ins.longitude.value,
-                        intensityFactor: ins.intensityFactor.value
-                    }
-                })
-            );
+            _vec3.fromArray(this.transform.ins.position.value);
+            _vec3.normalize().multiplyScalar(scene.outs.boundingRadius.value * 1.2);
+            this.transform.ins.position.setValue(_vec3.toArray());
         }
 
-<<<<<<< HEAD
         const viewer = this.getGraphComponent(CVSetup).viewer;
 
         viewer.rootElement.dispatchEvent(
@@ -127,10 +109,10 @@ export default class CVSunLight extends CSunLight implements ICVLight {
                 }
             })
         );
-=======
-        return super.update(context);
->>>>>>> b7dee12c (tours)
     }
+
+    return super.update(context);
+}
 
     fromDocument(document: IDocument, node: INode): number {
         if (!isFinite(node.light)) {

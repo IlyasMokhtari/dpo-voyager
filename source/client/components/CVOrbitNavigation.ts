@@ -275,13 +275,8 @@ export default class CVOrbitNavigation extends CObject3D
             }
             this._isAutoZooming = false;
 
-<<<<<<< HEAD
             viewer.rootElement.dispatchEvent(
                 new CustomEvent("view-center-change", {
-=======
-            viewer?.rootElement?.dispatchEvent(
-                new CustomEvent("zoom-extents", {
->>>>>>> b7dee12c (tours)
                     detail: {
                         hasZoomed: this._hasZoomed
                     }
