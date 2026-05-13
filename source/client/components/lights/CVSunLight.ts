@@ -110,26 +110,7 @@ export default class CVSunLight extends CSunLight implements ICVLight {
             );
         }
 
-<<<<<<< HEAD
-        const viewer = this.getGraphComponent(CVSetup).viewer;
-
-        viewer.rootElement.dispatchEvent(
-            new CustomEvent("SunLight-change", {
-                detail: {
-                    type: CVSunLight.type,
-                    color: ins.color.cloneValue(),
-                    intensity: ins.intensity.value,
-                    datetime: ins.datetime.value.tz(ins.timezone.value, true).format(),
-                    timezone: ins.timezone.value,
-                    latitude: ins.latitude.value,
-                    longitude: ins.longitude.value,
-                    intensityFactor: ins.intensityFactor.value
-                }
-            })
-        );
-=======
         return super.update(context);
->>>>>>> b7dee12c (tours)
     }
 
     fromDocument(document: IDocument, node: INode): number {

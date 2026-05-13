@@ -19,8 +19,6 @@ import CBackground, { EBackgroundStyle } from "@ff/scene/components/CBackground"
 import { Node } from "@ff/scene/components/CObject3D";
 
 import { IBackground, TBackgroundStyle } from "client/schema/setup";
-import CVViewer from "./CVViewer";
-import CVSetup from "./CVSetup";
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -50,6 +48,26 @@ export default class CVBackground extends CBackground
         this.background.layers.set(1);
     }
 
+    update(context)
+    {
+        const ins = this.ins;
+
+        const result = super.update(context);
+
+        if (ins.style.changed || ins.color0.changed || ins.color1.changed) {
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('background-change', {
+                detail: {
+                    style: ins.style.value,
+                    color0: ins.color0.cloneValue(),
+                    color1: ins.color1.cloneValue()
+                }
+            }));
+        }
+
+        return result;
+    }
+
     fromData(data: IBackground)
     {
         this.ins.copyValues({
@@ -70,22 +88,4 @@ export default class CVBackground extends CBackground
         };
     }
 
-    update(context){
-        const ins = this.ins;
-
-        if (ins.style.changed || ins.color0.changed || ins.color1.changed) {
-            const viewer = this.getGraphComponent(CVSetup).viewer;
-
-            viewer.rootElement.dispatchEvent(
-                new CustomEvent("background-change", {
-                    detail: {
-                        style: ins.style.value,
-                        color0: ins.color0.cloneValue(),
-                        color1: ins.color1.cloneValue(),
-                    }
-                })
-            );
-        }
-        return super.update(context);
-    }
 }

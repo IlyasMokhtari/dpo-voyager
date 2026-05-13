@@ -212,6 +212,17 @@ export default class CVTours extends Component
 
                 srElement.textContent = "";
 
+                const rootElDisabled = document.querySelector('voyager-explorer') as HTMLElement;
+                rootElDisabled?.dispatchEvent(new CustomEvent('tour-change', {
+                    detail: {
+                        enabled: false,
+                        tourIndex: -1,
+                        stepIndex: -1,
+                        tourTitle: "",
+                        stepTitle: ""
+                    }
+                }));
+
                 return true;
             }
         }
@@ -236,6 +247,18 @@ export default class CVTours extends Component
         if (stepCount === 0) {
             outs.stepIndex.setValue(-1);
             outs.stepTitle.setValue("");
+
+            const rootElNoSteps = document.querySelector('voyager-explorer') as HTMLElement;
+            rootElNoSteps?.dispatchEvent(new CustomEvent('tour-change', {
+                detail: {
+                    enabled: ins.enabled.value,
+                    tourIndex: outs.tourIndex.value,
+                    stepIndex: -1,
+                    tourTitle: outs.tourTitle.value,
+                    stepTitle: ""
+                }
+            }));
+
             return true;
         }
 
@@ -283,6 +306,21 @@ export default class CVTours extends Component
             machine.ins.id.setValue(step.id);
             tween ? machine.ins.tween.set() : machine.ins.recall.set();
             srElement.textContent = this.stepAltText != "Missing content" ? "Alt text: " + this.stepAltText : "";
+        }
+
+        if (ins.tourIndex.changed || ins.stepIndex.changed || ins.next.changed ||
+            ins.previous.changed || ins.first.changed || ins.enabled.changed)
+        {
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('tour-change', {
+                detail: {
+                    enabled: ins.enabled.value,
+                    tourIndex: outs.tourIndex.value,
+                    stepIndex: outs.stepIndex.value,
+                    tourTitle: outs.tourTitle.value,
+                    stepTitle: outs.stepTitle.value
+                }
+            }));
         }
 
         return true;

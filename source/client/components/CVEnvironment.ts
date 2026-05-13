@@ -168,6 +168,21 @@ export default class CVEnvironment extends Component
             this.sceneNode.scene.background = null;           
         }
 
+        if (ins.imageIndex.changed || ins.intensity.changed || ins.rotation.changed ||
+            ins.visible.changed || ins.enabled.changed)
+        {
+            const rootEl = document.querySelector('voyager-explorer') as HTMLElement;
+            rootEl?.dispatchEvent(new CustomEvent('environment-change', {
+                detail: {
+                    imageIndex: ins.imageIndex.value,
+                    intensity: ins.intensity.value,
+                    rotation: ins.rotation.cloneValue(),
+                    visible: ins.visible.value,
+                    enabled: ins.enabled.value
+                }
+            }));
+        }
+
         return true;
     }
 

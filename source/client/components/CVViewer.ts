@@ -485,7 +485,7 @@ export default class CVViewer extends Component
     }
 
     protected onModelLoad(event: IModelLoadEvent) {
-        this.rootElement.dispatchEvent(new CustomEvent('model-load', { detail: EDerivativeQuality[event.quality] }));
+        this.rootElement?.dispatchEvent(new CustomEvent('model-load', { detail: EDerivativeQuality[event.quality] }));
         this.refreshTagCloud();
 
         // update variant list
