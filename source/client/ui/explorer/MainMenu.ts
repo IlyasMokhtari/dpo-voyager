@@ -148,13 +148,13 @@ export default class MainMenu extends DocumentView
         return html`
             ${arButtonVisible && ui.isShowing(EUIElements.ar) ? html`<ff-button icon="ar" id="ar-btn" title=${language.getLocalizedString("Enter AR View")}
                 @click=${this.onEnterAR}></ff-button>` : null}
-            ${narrationButtonVisible ? html`<ff-button icon="audio" id="audio-btn" title=${language.getLocalizedString("Play Audio Narration")}
+            ${narrationButtonVisible && ui.isShowing(EUIElements.audio)? html`<ff-button icon="audio" id="audio-btn" title=${language.getLocalizedString("Play Audio Narration")}
                 ?selected=${narrationActive} @click=${this.onToggleNarration}></ff-button>` : null}
             ${tourButtonVisible && ui.isShowing(EUIElements.tours) ? html`<ff-button id="tour-btn" icon="globe" title=${language.getLocalizedString("Interactive Tours")}
                 ?selected=${toursActive} @click=${this.onToggleTours}></ff-button>` : null}
             ${readerButtonVisible && ui.isShowing(EUIElements.reader) ? html`<ff-button id="reader-btn" icon="article" title=${language.getLocalizedString("Read Articles")}
                 ?selected=${readerActive} ?disabled=${modeButtonsDisabled} @click=${this.onToggleReader}></ff-button>` : null}
-            ${annotationsButtonVisible ? html`<ff-button aria-pressed=${annotationsActive} id="anno-btn" icon="comment" title=${language.getLocalizedString("Show/Hide Annotations")}
+            ${annotationsButtonVisible && ui.isShowing(EUIElements.annotations)? html`<ff-button aria-pressed=${annotationsActive} id="anno-btn" icon="comment" title=${language.getLocalizedString("Show/Hide Annotations")}
                 ?selected=${annotationsActive} ?disabled=${modeButtonsDisabled} @click=${this.onToggleAnnotations}></ff-button>` : null}
             ${ui.isShowing(EUIElements.share) ? html`<ff-button icon="share" id="share-btn" title=${language.getLocalizedString("Share Experience")}
                 ?selected=${this.shareButtonSelected} @click=${this.onToggleShare}></ff-button>` : null}    
